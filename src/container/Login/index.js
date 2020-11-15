@@ -3,6 +3,7 @@ import { withRouter, Redirect } from "react-router-dom";
 import "./index.scss";
 import SignUp from "../../components/Signup";
 import Signin from "../../components/Signin";
+import Forgotpassword from "../../components/Forgotpassword";
 import RightPanel from "../../components/Rightpannel";
 import LeftPanel from "../../components/Leftpannel";
 import myApp from "../../FirebaseConfig";
@@ -26,7 +27,7 @@ const Login = ({ history }) => {
             password: password.value,
           })
           .then((res) => {
-            console.log("login success", res);
+            console.log("login success", res.status);
             if (res.status === 200) {
               localStorage.setItem("ownertype", res.data.user.ownerType);
               localStorage.setItem("token", res.data.token);
@@ -34,10 +35,16 @@ const Login = ({ history }) => {
               localStorage.setItem("resturant_id", res.data.user.resturant_id);
               // history.push("/")
               window.location.reload();
+            } else {
+              console.log("error");
             }
+          })
+          .catch((error) => {
+            // <Redirect to="/ForgotPassword" />;
           });
       } catch (error) {
-        alert(error);
+        console.log(error);
+        console.log("failed");
       }
     },
     [history]
