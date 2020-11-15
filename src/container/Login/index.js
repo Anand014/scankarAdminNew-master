@@ -12,6 +12,7 @@ import axios from "axios";
 
 const Login = ({ history }) => {
   const [toggle, setToggle] = useState(true);
+  const [redirect, setRedirect] = useState(false);
   const handleLogin = useCallback(
     async (event) => {
       event.preventDefault();
@@ -40,7 +41,7 @@ const Login = ({ history }) => {
             }
           })
           .catch((error) => {
-            // <Redirect to="/ForgotPassword" />;
+            setRedirect(true);
           });
       } catch (error) {
         console.log(error);
@@ -88,9 +89,6 @@ const Login = ({ history }) => {
       alert(error);
     }
   }, []);
-
-  const ForgotPassword = () => {};
-
   const onClick = () => setToggle(!toggle);
   const { currentUser } = useContext(AuthContext);
   if (currentUser) {
@@ -101,6 +99,15 @@ const Login = ({ history }) => {
       <div className="forms-container">
         <div className="signin-signup">
           <Signin onSubmit={handleLogin} />
+          {redirect ? (
+            <div>
+              <a href="#" className="forgotpassword">
+                Forgot Password?
+              </a>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
 
