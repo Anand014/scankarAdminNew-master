@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
-import { Route } from "react-router-dom";
+import { Route,useHistory } from "react-router-dom";
 import Loader from "../layout/Loader";
 import { Switch } from "antd";
 import "./app.css";
@@ -57,6 +57,8 @@ const formatGroupLabel = (data) => (
 );
 
 const AppLayout = (props) => {
+
+  let history=useHistory();
   const [shop, setShop] = useState({});
   const [photo, setPhoto] = useState("");
   const [name, setName] = useState("");
@@ -101,6 +103,7 @@ const AppLayout = (props) => {
     for (let i = 1; i <= 50; i++) {
       arr[i - 1] = i;
     }
+    
     loadCategory();
     setSeats(arr);
     setShop(shopData[index]);
@@ -641,7 +644,7 @@ const AppLayout = (props) => {
             }}
           ></Route>
 
-          <Sidebar />
+          {localStorage.getItem("userid")&&<Sidebar />}
         </div>
       </div>
       {/* </Fragment> */}

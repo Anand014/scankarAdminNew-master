@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import logo_compact from '../assets/images/scan-kar-logo.png';
 import logo_light from '../assets/images/scan-kar-logo.png'
 import { MENUITEMS } from './sidebar/menu';
-import { Link } from 'react-router-dom'
+import { Link,useHistory } from 'react-router-dom'
 import configDB from '../data/customizer/config';
 import myApp from "../FirebaseConfig"
 
@@ -12,8 +12,10 @@ const Sidebar = () => {
     const [mainmenu, setMainMenu] = useState(MENUITEMS);
     const switchToggle = useSelector(state => state.Common.switchToggle)
     const sidebar_background_color = configDB.data.settings.sidebar_background_setting;
+    let history=useHistory();
 
     useEffect(() => {
+        
         const currentUrl = window.location.pathname;
         mainmenu.filter(items => {
             if (items.path === currentUrl)
@@ -39,6 +41,7 @@ const Sidebar = () => {
 
         // eslint-disable-next-line
     }, []);
+
 
     const setNavActive = (item) => {
         MENUITEMS.filter(menuItem => {
@@ -131,7 +134,12 @@ const Sidebar = () => {
                                     }
                                     
                
-                                    {(menuItem.type === 'sub4') && <a style={{ marginTop: "26rem" }} className="sidebar-header" onClick={() => {localStorage.clear();  window.location.reload();}}>
+                                    {(menuItem.type === 'sub4') && <a style={{ marginTop: "26rem" }} className="sidebar-header" onClick={() => 
+                                    {
+                                    
+                                        localStorage.clear();
+                                        window.location.assign("/login");
+                                        }}>
                                         <menuItem.icon />
                                         <span>{menuItem.title}</span>
                                         <i className="fa fa-angle-right pull-right"></i>
