@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
+import "./forgot.css";
 
 const Forgotpassword = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState("");
   useEffect(() => {
     console.log("entered email", email);
   }, [email]);
@@ -19,11 +20,11 @@ const Forgotpassword = () => {
         .then((res) => {
           console.log("login success", res.status);
           if (res.status === 200) {
-            setSuccess(true);
+            setSuccess(res.data.data);
           }
         })
         .catch((error) => {
-          setMessage(true);
+          setMessage(error.message);
         });
     } catch (error) {
       console.log(error);
@@ -31,6 +32,8 @@ const Forgotpassword = () => {
   });
   return (
     <form onSubmit={handleForgotPassword} className="forgotPassword-form">
+      {success ? <h2>{success}</h2> : <div></div>}
+      {message ? <h2>{message}</h2> : <div></div>}
       <h2 className="title">Forgot Password?</h2>
       <div className="input-field">
         <i className="fas fa-user"></i>
@@ -45,8 +48,6 @@ const Forgotpassword = () => {
       <button type="submit" className="btn solid">
         Send Link
       </button>
-      {success ? <h2>Email has been send</h2> : <div></div>}
-      {message ? <h2>No User Found</h2> : <div></div>}
     </form>
   );
 };
