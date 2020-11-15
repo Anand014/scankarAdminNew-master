@@ -12,8 +12,8 @@ const AppRouter = () => {
       <Router>
         <div>
           <PrivateRoute path="/" component={Home} />
-          {/* <Route path="/Forgotpassword" component={Forgotpassword} /> */}
-          <Route exact path="/login" component={Forgotpassword} />
+          <Route exact path="/forgetpassword" component={Forgotpassword} />
+          <Route exact path="/login" component={Login} />
         </div>
       </Router>
     </AuthProvider>

@@ -1,9 +1,15 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, Redirect,useHistory } from 'react-router-dom';
 import myApp from '../../FirebaseConfig.js';
 import './index.scss';
 
 const Header = () => {
+
+  let history = useHistory();
+
+  function handleClick() {
+    history.push("/home");
+  }
   return (
     <header className='header'>
       <h1 className='Logo'>
@@ -28,7 +34,12 @@ const Header = () => {
           </li>
         </ul>
       </nav>
-      <button className='cta' onClick={() => myApp.auth().signOut()}>
+      <button className='cta' onClick={() => {
+
+        history.push("/home")
+        myApp.auth().signOut()
+        
+      }}>
         Sign out
       </button>
     </header>
