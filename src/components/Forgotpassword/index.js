@@ -24,7 +24,7 @@ const Forgotpassword = () => {
           }
         })
         .catch((error) => {
-          setMessage(error.message);
+          setMessage("Email Not Found");
         });
     } catch (error) {
       console.log(error);
