@@ -88,6 +88,9 @@ const Login = ({ history }) => {
       alert(error);
     }
   }, []);
+
+  const ForgotPassword = () => {};
+
   const onClick = () => setToggle(!toggle);
   const { currentUser } = useContext(AuthContext);
   if (currentUser) {
