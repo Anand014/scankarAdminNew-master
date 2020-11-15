@@ -24,3 +24,7 @@
   cursor: pointer;
   transition: 0.5s;
 }
+
+.loader {
+  margin-left: 5rem;
+}

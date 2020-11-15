@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useContext } from "react";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter, Redirect, Link } from "react-router-dom";
 import "./index.scss";
 import SignUp from "../../components/Signup";
 import Signin from "../../components/Signin";
@@ -101,9 +101,9 @@ const Login = ({ history }) => {
           <Signin onSubmit={handleLogin} />
           {redirect ? (
             <div>
-              <a href="#" className="forgotpassword">
+              <Link to="/forgetpassword" className="forgotpassword">
                 Forgot Password?
-              </a>
+              </Link>
             </div>
           ) : (
             <></>
