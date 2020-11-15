@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
-import { Route,useHistory } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 import Loader from "../layout/Loader";
 import { Switch } from "antd";
 import "./app.css";
@@ -27,7 +27,7 @@ import swal from "sweetalert";
 import { Dropdown } from "semantic-ui-react";
 import Toggle from "react-toggle";
 import Modal from "../common/modal";
-
+import GST from "./GSTtoggler";
 
 const groupStyles = {
   display: "flex",
@@ -47,7 +47,9 @@ const groupBadgeStyles = {
   textAlign: "center",
 };
 
-const header = { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+const header = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+};
 
 const formatGroupLabel = (data) => (
   <div style={groupStyles}>
@@ -57,8 +59,7 @@ const formatGroupLabel = (data) => (
 );
 
 const AppLayout = (props) => {
-
-  let history=useHistory();
+  let history = useHistory();
   const [shop, setShop] = useState({});
   const [photo, setPhoto] = useState("");
   const [name, setName] = useState("");
@@ -71,10 +72,10 @@ const AppLayout = (props) => {
   const [optionsValue, setOptions] = useState([]);
   const [modal, setModal] = useState(false);
   const [menuFile, setMenuFile] = useState(null);
-  const [editModal, setEditModal] = useState(false)
-  const [editName, setEditName] = useState("")
-  const [editPrice, setEditPrice] = useState("")
-  const [menuId, setMenuId] = useState(null)
+  const [editModal, setEditModal] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editPrice, setEditPrice] = useState("");
+  const [menuId, setMenuId] = useState(null);
   const [allcat, setAllCat] = useState([]);
 
   const options = [
@@ -103,7 +104,7 @@ const AppLayout = (props) => {
     for (let i = 1; i <= 50; i++) {
       arr[i - 1] = i;
     }
-    
+
     loadCategory();
     setSeats(arr);
     setShop(shopData[index]);
@@ -113,17 +114,20 @@ const AppLayout = (props) => {
   const loadCategory = () => {
     const Idd = localStorage.getItem("userid");
     let temp = [];
-    Axios.get(`https://backend.scankar.com/api/v1/users/getcategory/${Idd}`, header).then((res) => {
+    Axios.get(
+      `https://backend.scankar.com/api/v1/users/getcategory/${Idd}`,
+      header
+    ).then((res) => {
       // setMenu(res.data.data.products.reverse());
       res.data.data.cat.map((res) => {
         temp.push(res.category);
       });
       let categories = temp.filter((v, i, a) => a.indexOf(v) === i);
-      const catObj = categories.reduce((a,b)=> (a[b]='',a),{});
+      const catObj = categories.reduce((a, b) => ((a[b] = ""), a), {});
       console.log("All categories:", catObj);
       setAllCat(categories);
     });
-  }
+  };
 
   const addCat = (e) => {
     const newTags = allcat;
@@ -131,20 +135,25 @@ const AppLayout = (props) => {
     newTags.push(e);
     console.log("newTags", newTags);
     setAllCat(newTags);
-  }
-
+  };
 
   const loadMenu = () => {
-    const data = {}
+    const data = {};
     data.Subscription = localStorage.getItem("subs");
     data.userId = localStorage.getItem("userid");
 
-    Axios.get("https://backend.scankar.com/api/v1/products", header).then((res) => {
-      setMenu(res.data.data.products.reverse());
+    Axios.get("https://backend.scankar.com/api/v1/products", header).then(
+      (res) => {
+        setMenu(res.data.data.products.reverse());
+      }
+    );
+    Axios.put(
+      `https://backend.scankar.com/api/v1/users/endurlupdate`,
+      data,
+      header
+    ).then((res) => {
+      console.log("endurlupdate", res);
     });
-    Axios.put(`https://backend.scankar.com/api/v1/users/endurlupdate`, data, header).then(res => {
-      console.log("endurlupdate", res)
-    })
   };
 
   const dineInGen = () => {
@@ -153,8 +162,9 @@ const AppLayout = (props) => {
     let doc = new jsPDF();
     doc.setFontSize(50);
     for (let i = 0; i < shop.seats; i++) {
-      (localStorage.getItem("ownertype") !== "hotelowner" ?
-        doc.text(80, 220, "Table: " + (i + 1)) : doc.text(80, 220, "Room: " + (i + 1 + 100)))
+      localStorage.getItem("ownertype") !== "hotelowner"
+        ? doc.text(80, 220, "Table: " + (i + 1))
+        : doc.text(80, 220, "Room: " + (i + 1 + 100));
       const qrCodeDataUri = qrCodeCanvas[i].toDataURL("image/jpg", 0.5);
 
       doc.addImage(qrCodeDataUri, "JPEG", 5, 0, 200, 200);
@@ -226,19 +236,21 @@ const AppLayout = (props) => {
     data.append("price", price);
     data.append("resturant_id", localStorage.getItem("resturant_id"));
     data.append("options", optionsValue);
-    Axios.post("https://backend.scankar.com/api/v1/products", data, header).then(
-      (resp) => {
-        if ((resp.data.status = "Success")) {
-          swal("Added!", "Menu Item Succesfully Added", "success").then(() => {
-            setName("");
-            setFile({});
-            setCategory("");
-            setPrice("");
-            loadMenu();
-          });
-        }
+    Axios.post(
+      "https://backend.scankar.com/api/v1/products",
+      data,
+      header
+    ).then((resp) => {
+      if ((resp.data.status = "Success")) {
+        swal("Added!", "Menu Item Succesfully Added", "success").then(() => {
+          setName("");
+          setFile({});
+          setCategory("");
+          setPrice("");
+          loadMenu();
+        });
       }
-    );
+    });
   };
 
   const changeAvailability = (e, status, id) => {
@@ -251,28 +263,37 @@ const AppLayout = (props) => {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
-          Axios.patch(`https://backend.scankar.com/api/v1/products/${id}`, {
-            status: "unAvailable",
-          }, header).then(() => {
+          Axios.patch(
+            `https://backend.scankar.com/api/v1/products/${id}`,
+            {
+              status: "unAvailable",
+            },
+            header
+          ).then(() => {
             loadMenu();
           });
         }
       });
     } else {
-      Axios.patch(`https://backend.scankar.com/api/v1/products/${id}`, {
-        status: "Available",
-      }, header).then(() => {
+      Axios.patch(
+        `https://backend.scankar.com/api/v1/products/${id}`,
+        {
+          status: "Available",
+        },
+        header
+      ).then(() => {
         loadMenu();
       });
     }
   };
 
   const deleteItem = (id) => {
-    Axios.delete(`https://backend.scankar.com/api/v1/products/${id}`, header).then(
-      () => {
-        loadMenu();
-      }
-    );
+    Axios.delete(
+      `https://backend.scankar.com/api/v1/products/${id}`,
+      header
+    ).then(() => {
+      loadMenu();
+    });
   };
 
   const showModal = () => {
@@ -329,7 +350,8 @@ const AppLayout = (props) => {
           });
           Axios.post(
             "https://backend.scankar.com/api/v1/products/uploadinbulk",
-            { products }, header
+            { products },
+            header
           ).then((res) => {
             console.log("Bul uploaded", res);
             loadMenu();
@@ -337,44 +359,43 @@ const AppLayout = (props) => {
         }
         setModal(false);
       });
-    }
-    else {
+    } else {
       const data = new FormData();
-    data.append("photo", file);
-    data.append("name", editName);
-    data.append("price", editPrice);
-      Axios.patch(`https://backend.scankar.com/api/v1/products/${menuId}`, data, header).then(res => {
-        console.log("updated item", res)
+      data.append("photo", file);
+      data.append("name", editName);
+      data.append("price", editPrice);
+      Axios.patch(
+        `https://backend.scankar.com/api/v1/products/${menuId}`,
+        data,
+        header
+      ).then((res) => {
+        console.log("updated item", res);
         loadMenu();
         setEditModal(false);
         setModal(false);
         setFile({});
-      })
+      });
     }
-  }
+  };
 
   const editItem = (id, index) => {
     setEditModal(true);
     setModal(true);
-    setMenuId(id)
-    setEditName(menu[index].name)
-    setEditPrice(menu[index].price)
-
-  }
+    setMenuId(id);
+    setEditName(menu[index].name);
+    setEditPrice(menu[index].price);
+  };
   const onModalInputChange = (e) => {
     if (e.target.name === "editName") {
       setEditName(e.target.value);
-
-    }
-    else {
+    } else {
       setEditPrice(e.target.value);
     }
-  }
+  };
 
   const editMenuItem = () => {
     return (
       <div>
-
         <Form.Group as={Col} controlId="formGridPassword">
           <Form.Label>Item Name</Form.Label>
           <Form.Control
@@ -410,8 +431,8 @@ const AppLayout = (props) => {
           />
         </Form.Group>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     // <Fragment>
@@ -427,7 +448,7 @@ const AppLayout = (props) => {
               return (
                 <div>
                   <Header />
-                  <div className="page-body" style={{ "marginLeft": "16rem" }}>
+                  <div className="page-body" style={{ marginLeft: "16rem" }}>
                     <Sample />
                   </div>
                 </div>
@@ -464,20 +485,24 @@ const AppLayout = (props) => {
                         </Button>{" "}
                       </div>
                     ) : (
-                        <Button variant="primary" onClick={() => dineInGen()}>
-                          Request For Hotel Rooms
-                        </Button>
-                      )}
+                      <Button variant="primary" onClick={() => dineInGen()}>
+                        Request For Hotel Rooms
+                      </Button>
+                    )}
                     <div style={{ opacity: 0 }}>
                       {seats.map((x) => (
                         <QRCode
-                          value={`https://user.scankar.com/${localStorage.getItem("userid")}T${x}`}
+                          value={`https://user.scankar.com/${localStorage.getItem(
+                            "userid"
+                          )}T${x}`}
                           size={200}
                         />
                       ))}
 
                       <QRCode
-                        value={`https://user.scankar.com/${localStorage.getItem("userid")}take`}
+                        value={`https://user.scankar.com/${localStorage.getItem(
+                          "userid"
+                        )}take`}
                         size={200}
                       />
                     </div>
@@ -568,6 +593,7 @@ const AppLayout = (props) => {
                     <p style={{ fontSize: "20px" }}>
                       Upload Menu from .Csv file
                     </p>
+                    <GST />
                     <Button variant="warninig" onClick={() => showModal()}>
                       Bulk Menu Upload
                     </Button>
@@ -575,14 +601,20 @@ const AppLayout = (props) => {
                     <Modal
                       show={modal}
                       isEdit={false}
-                      setModal={() => { setModal(false); setEditModal(false) }}
+                      setModal={() => {
+                        setModal(false);
+                        setEditModal(false);
+                      }}
                       modalBody={menuUpload()}
                       uploadAll={(type) => uploadAll(type)}
                     />
                     <Modal
                       show={editModal}
                       isEdit={true}
-                      setModal={() => { setModal(false); setEditModal(false) }}
+                      setModal={() => {
+                        setModal(false);
+                        setEditModal(false);
+                      }}
                       modalBody={editMenuItem()}
                       uploadAll={(type) => uploadAll(type)}
                     />
@@ -644,7 +676,7 @@ const AppLayout = (props) => {
             }}
           ></Route>
 
-          {localStorage.getItem("userid")&&<Sidebar />}
+          {localStorage.getItem("userid") && <Sidebar />}
         </div>
       </div>
       {/* </Fragment> */}

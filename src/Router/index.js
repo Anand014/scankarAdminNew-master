@@ -12,11 +12,7 @@ const AppRouter = () => {
       <Router>
         <div>
           <PrivateRoute path="/" component={Home} />
-<<<<<<< HEAD
-          {/* <Route path="/Forgotpassword" component={Forgotpassword} /> */}
-=======
           <Route exact path="/forgetpassword" component={Forgotpassword} />
->>>>>>> 8ac723b65b502be7e9212b698f8d0433b8863094
           <Route exact path="/login" component={Login} />
         </div>
       </Router>
