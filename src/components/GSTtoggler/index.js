@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import { GstToggle } from "../../redux/common/actions";
 import { useDispatch } from "react-redux";
-import "./GST.scss";
+import Switch from '@material-ui/core/Switch';
+
+
 
 const GST = () => {
-  const [toggle, setToggle] = useState("");
-  const dispatch = useDispatch();
+  const [state, setState] = React.useState({
+    checkedA: true,
+    checkedB: true,
+  });
+
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
 
   return (
     <>
-      <ul>
-        <li>
-          <input id="s2" type="checkbox" class="switch" />
-          <label for="s2"> GST</label>
-        </li>
-      </ul>
+     <Switch
+        checked={state.checkedB}
+        onChange={handleChange}
+        color="primary"
+        name="checkedB"
+        inputProps={{ 'aria-label': 'primary checkbox' }}
+      />
     </>
   );
 };

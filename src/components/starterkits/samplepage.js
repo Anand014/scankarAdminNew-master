@@ -32,7 +32,7 @@ const API_KEY_SMS =
 
 // const beep = new UIFx({asset: mp3File});
 const bell = new UIfx(bellAudio, {
-  volume: 0.4, // number between 0.0 ~ 1.0
+  volume: 0.5, // number between 0.0 ~ 1.0
   throttleMs: 100,
 });
 
@@ -124,7 +124,11 @@ useEffect(()=> {
 
   const notify = (user) => {
     toast(`New Order by ${user}!`);
-    bell.play();
+    for(let i=0;i<10;i++){
+      setTimeout(i*1000,()=>{
+        bell.play();
+      })
+    }
   };
 
   return (

@@ -3,16 +3,18 @@ import swal from "sweetalert2";
 import axios from "axios";
 import "./forgot.css";
 import { CircularProgress } from "@material-ui/core";
+import {useHistory} from 'react-router-dom';
 
 const Forgotpassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(false);
   const [success, setSuccess] = useState("");
   const [loader, setLoader] = useState(false);
+  let history=useHistory();
 
-  useEffect(() => {
-    console.log("entered email", email);
-  }, [email]);
+  // useEffect(() => {
+  //   console.log("entered email", email);
+  // }, [email]);
 
   const handleForgotPassword = (event) => {
     event.preventDefault();
@@ -26,11 +28,23 @@ const Forgotpassword = () => {
           if (res.status === 200) {
             setLoader(false);
             setSuccess(res.data.data);
+            swal.fire({
+              text: 'Email sent successfully',
+              icon: "info",
+              button: "Okay",
+            }).then(res=>{
+              history.push('/login')
+            })
           }
         })
         .catch((error) => {
           setLoader(false);
-          setMessage(true);
+          setSuccess("Email Not found");
+          swal.fire({
+            text: 'Email Not found',
+            icon: "info",
+            button: "Okay",
+          })
         });
     } catch (error) {
       console.log(error);
@@ -38,31 +52,19 @@ const Forgotpassword = () => {
   };
   return (
     <>
-      {success ? (
-        swal.fire({
-          text: success,
-          icon: "success",
-          button: "Okay",
-        })
-      ) : (
-        <></>
-      )}
-      {message ? (
-        swal.fire({
-          text: "Email Not Found",
-          icon: "info",
-          button: "Okay",
-        })
-      ) : (
-        <></>
-      )}
+    
       <form onSubmit={handleForgotPassword} className="forgotPassword-form">
+
+      
+      
+        
+      
         <h2 className="title">
           Forgot Password?
           {loader ? (
             <CircularProgress disableShrink className="loader" />
           ) : (
-            <></>
+            ""
           )}
         </h2>
         <div className="input-field">
@@ -79,6 +81,7 @@ const Forgotpassword = () => {
           Send Link
         </button>
       </form>
+      
     </>
   );
 };
