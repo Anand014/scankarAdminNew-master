@@ -8,15 +8,20 @@ import RightPanel from "../../components/Rightpannel";
 import LeftPanel from "../../components/Leftpannel";
 import myApp from "../../FirebaseConfig";
 import { AuthContext } from "../../utility/AuthContext";
+import { LinearProgress } from "@material-ui/core";
 import axios from "axios";
+import swal from "sweetalert2";
 
 const Login = ({ history }) => {
   const [toggle, setToggle] = useState(true);
   const [redirect, setRedirect] = useState(false);
+  const [loader, setLoader] = useState(false);
+
   const handleLogin = useCallback(
     async (event) => {
       event.preventDefault();
       const { email, password } = event.target.elements;
+      setLoader(true);
       try {
         // await myApp
         //   .auth()
@@ -36,16 +41,38 @@ const Login = ({ history }) => {
               localStorage.setItem("resturant_id", res.data.user.resturant_id);
               // history.push("/")
               window.location.reload();
+              setLoader(false);
             } else {
+              setLoader(false);
               console.log("error");
             }
           })
           .catch((error) => {
-            setRedirect(true);
+            setLoader(false);
+            if (error.response.status === 404) {
+              console.log(error.response);
+              swal.fire({
+                title: "Email Does Not Exist",
+                icon: "error",
+                button: "Okay",
+              });
+            } else if (error.response.status === 400) {
+              swal.fire({
+                title: "Please Enter Email and Password",
+                icon: "error",
+                button: "Okay",
+              });
+            } else {
+              setRedirect(true);
+              swal.fire({
+                title: "Incorrect Password!",
+                icon: "error",
+                button: "Okay",
+              });
+            }
           });
       } catch (error) {
-        console.log(error);
-        console.log("failed");
+        console.log(error, "failed");
       }
     },
     [history]
@@ -54,6 +81,7 @@ const Login = ({ history }) => {
     event.preventDefault();
     const { name, email, password, type } = event.target.elements;
     try {
+      setLoader(true);
       // await myApp
       //   .auth()
       //   .createUserWithEmailAndPassword(email.value, password.value);
@@ -83,7 +111,6 @@ const Login = ({ history }) => {
           window.location.reload();
         }
       });
-
       //  history.push('/');
     } catch (error) {
       alert(error);
@@ -95,40 +122,48 @@ const Login = ({ history }) => {
     return <Redirect to="/" />;
   }
   return toggle ? (
-    <div className="container">
-      <div className="forms-container">
-        <div className="signin-signup">
-          <Signin onSubmit={handleLogin} />
-          {redirect ? (
-            <div>
-              <Link to="/forgetpassword" className="forgotpassword">
-                Forgot Password?
-              </Link>
-            </div>
-          ) : (
-            <></>
-          )}
+    <>
+      {loader ? <LinearProgress /> : ""}
+      <div className="container" style={{ transition: "all 1s" }}>
+        <div className="forms-container">
+          <div className="signin-signup">
+            <Signin onSubmit={handleLogin} />
+            {redirect ? (
+              <div>
+                <Link to="/forgetpassword" className="forgotpassword">
+                  Forgot Password?
+                </Link>
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+        <div className="panels-container">
+          <LeftPanel click={onClick} />
+          <RightPanel click={onClick} />
         </div>
       </div>
-
-      <div className="panels-container">
-        <LeftPanel click={onClick} />
-        <RightPanel click={onClick} />
-      </div>
-    </div>
+    </>
   ) : (
-    <div className="container sign-up-mode">
-      <div className="forms-container">
-        <div className="signin-signup">
-          <SignUp onSubmit={handleSignUp} />
+    <>
+      {loader ? <LinearProgress /> : <></>}
+      <div
+        className="container sign-up-mode"
+        style={{ marginLeft: "10%", transition: "all 1s" }}
+      >
+        <div className="forms-container">
+          <div className="signin-signup">
+            <SignUp onSubmit={handleSignUp} />
+          </div>
+        </div>
+
+        <div className="panels-container">
+          <LeftPanel click={onClick} />
+          <RightPanel click={onClick} />
         </div>
       </div>
-
-      <div className="panels-container">
-        <LeftPanel click={onClick} />
-        <RightPanel click={onClick} />
-      </div>
-    </div>
+    </>
   );
 };
 

@@ -3,7 +3,6 @@ import axios from "axios";
 import swal from "sweetalert2";
 import { LinearProgress } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import "./changePassword.scss";
 
 const ChangePassword = () => {
   const [password, setPassword] = useState("");
@@ -69,11 +68,9 @@ const ChangePassword = () => {
   };
   return (
     <>
-      <div className="loader">
-        {loader ? <LinearProgress disableShrink /> : ""}
-      </div>
+      {loader ? <LinearProgress /> : ""}
       <form onSubmit={handleChangePassword} className="forgotPassword-form">
-        <h2 className="title">ChangePassword</h2>
+        <h2 className="title">Change Password</h2>
         <div className="input-field">
           <i className="fa fa-key"></i>
           <input
@@ -93,7 +90,6 @@ const ChangePassword = () => {
             value={ConfirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          ;
         </div>
         <button type="submit" className="btn solid">
           Submit
