@@ -13,7 +13,7 @@ import { Table } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UIfx from "uifx";
-import bellAudio from "../../assets/sound/pristine.mp3";
+import bellAudio from "../../assets/sound/pristine.mpeg";
 
 import { subscribeToTimer } from "../socketWeb";
 
