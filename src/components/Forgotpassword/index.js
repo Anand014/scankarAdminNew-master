@@ -18,37 +18,47 @@ const Forgotpassword = () => {
   const handleForgotPassword = (event) => {
     event.preventDefault();
     setLoader(true);
-    try {
-      axios
-        .post("http://localhost:5000/api/v1/forgotPassword", {
-          email: email,
-        })
-        .then((res) => {
-          if (res.status === 200) {
+    if (email === "") {
+      swal.fire({
+        title: "Please Enter a Valid Email",
+        icon: "error",
+        button: "Okay",
+      });
+      setLoader(false);
+    } else {
+      try {
+        axios
+          .post("http://localhost:5000/api/v1/forgotPassword", {
+            email: email,
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              setLoader(false);
+              swal
+                .fire({
+                  title: "Email sent successfully",
+                  icon: "success",
+                  button: "Okay",
+                })
+                .then((res) => {
+                  history.push("/login");
+                });
+            }
+          })
+          .catch((error) => {
             setLoader(false);
-            swal
-              .fire({
-                title: "Email sent successfully",
-                icon: "success",
-                button: "Okay",
-              })
-              .then((res) => {
-                history.push("/login");
-              });
-          }
-        })
-        .catch((error) => {
-          setLoader(false);
-          swal.fire({
-            title: "Email Not found",
-            icon: "error",
-            button: "Okay",
+            swal.fire({
+              title: "Email Not found",
+              icon: "error",
+              button: "Okay",
+            });
           });
-        });
-    } catch (error) {
-      console.log(error);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+
   return (
     <>
       {loader ? <LinearProgress /> : ""}
