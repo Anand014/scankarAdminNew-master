@@ -64,7 +64,7 @@ const AppLayout = (props) => {
   const [photo, setPhoto] = useState("");
   const [name, setName] = useState("");
   const [category, setCategory] = useState("BURGER");
-  const [gstToggle,setGstToggle]=useState(false);
+  const [gstToggle, setGstToggle] = useState(false);
   const [price, setPrice] = useState([]);
   const [file, setFile] = useState({});
   const [seats, setSeats] = useState([]);
@@ -230,12 +230,12 @@ const AppLayout = (props) => {
       return;
     }
 
-    console.log(gstToggle)
+    console.log(gstToggle);
     const data = new FormData();
     data.append("photo", file);
     data.append("name", name);
     data.append("category", category);
-    data.append("gst",gstToggle);
+    data.append("gst", gstToggle);
     data.append("price", price);
     data.append("resturant_id", localStorage.getItem("resturant_id"));
     data.append("options", optionsValue);
@@ -495,7 +495,7 @@ const AppLayout = (props) => {
                     <div style={{ opacity: 0 }}>
                       {seats.map((x) => (
                         <QRCode
-                          value={`https://user.scankar.com/${localStorage.getItem(
+                          value={`https://user.scankar.com/login/${localStorage.getItem(
                             "userid"
                           )}T${x}`}
                           size={200}
@@ -503,7 +503,7 @@ const AppLayout = (props) => {
                       ))}
 
                       <QRCode
-                        value={`https://user.scankar.com/${localStorage.getItem(
+                        value={`https://user.scankar.com/login/${localStorage.getItem(
                           "userid"
                         )}take`}
                         size={200}
@@ -596,9 +596,16 @@ const AppLayout = (props) => {
                     <p style={{ fontSize: "20px" }}>
                       Upload Menu from .Csv file
                     </p>
-                    <div className='gst-wrapper'>
-                      <span className='gst-toggle-label'>GST</span>
-                      <Switch className='gstToggle' checked={gstToggle} onChange={(checked,e)=>{setGstToggle(!gstToggle)}} /></div>
+                    <div className="gst-wrapper">
+                      <span className="gst-toggle-label">GST</span>
+                      <Switch
+                        className="gstToggle"
+                        checked={gstToggle}
+                        onChange={(checked, e) => {
+                          setGstToggle(!gstToggle);
+                        }}
+                      />
+                    </div>
                     <Button variant="warninig" onClick={() => showModal()}>
                       Bulk Menu Upload
                     </Button>
