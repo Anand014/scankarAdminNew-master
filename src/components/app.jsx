@@ -495,7 +495,7 @@ const AppLayout = (props) => {
                     <div style={{ opacity: 0 }}>
                       {seats.map((x) => (
                         <QRCode
-                          value={`https://user.scankar.com/login/${localStorage.getItem(
+                          value={`http://ec2-15-206-210-224.ap-south-1.compute.amazonaws.com:3000/login/${localStorage.getItem(
                             "userid"
                           )}T${x}`}
                           size={200}
@@ -503,7 +503,7 @@ const AppLayout = (props) => {
                       ))}
 
                       <QRCode
-                        value={`https://user.scankar.com/login/${localStorage.getItem(
+                        value={`http://ec2-15-206-210-224.ap-south-1.compute.amazonaws.com:3000/login/${localStorage.getItem(
                           "userid"
                         )}take`}
                         size={200}
