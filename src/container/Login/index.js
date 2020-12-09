@@ -33,7 +33,7 @@ const Login = ({ history }) => {
             password: password.value,
           })
           .then((res) => {
-            console.log("login success", res.status);
+            console.log("login success", res);
             if (res.status === 200) {
               localStorage.setItem("ownertype", res.data.user.ownerType);
               localStorage.setItem("token", res.data.token);
