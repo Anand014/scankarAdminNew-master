@@ -28,7 +28,7 @@ const Login = ({ history }) => {
         //   .signInWithEmailAndPassword(email.value, password.value);
         // history.push('/');
         axios
-          .post("http://localhost:5000/api/v1/adminLogin", {
+          .post("https://backend.scankar.com/api/v1/adminLogin", {
             email: email.value,
             password: password.value,
           })
@@ -49,8 +49,9 @@ const Login = ({ history }) => {
           })
           .catch((error) => {
             setLoader(false);
+            console.log(error.response.status, "signin status(error)");
+            console.log(error.response.data);
             if (error.response.status === 404) {
-              console.log(error.response);
               swal.fire({
                 title: "Email Does Not Exist",
                 icon: "error",
@@ -58,7 +59,7 @@ const Login = ({ history }) => {
               });
             } else if (error.response.status === 400) {
               swal.fire({
-                title: "Please Enter Email and Password",
+                title: "Please Enter Correct Email and Password",
                 icon: "error",
                 button: "Okay",
               });
@@ -100,17 +101,19 @@ const Login = ({ history }) => {
         role: "admin",
         mobileNumber: mobNo.toString(),
       };
-      axios.post("http://localhost:5000/api/v1/register", data).then((res) => {
-        console.log("signup reponse", res);
-        if (res.status === 200) {
-          localStorage.setItem("ownertype", res.data.user.ownerType);
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("userid", res.data.user._id);
-          localStorage.setItem("resturant_id", res.data.user.resturant_id);
-          // history.push("/")
-          window.location.reload();
-        }
-      });
+      axios
+        .post("https://backend.scankar.com/api/v1/register", data)
+        .then((res) => {
+          console.log("signup reponse", res);
+          if (res.status === 200) {
+            localStorage.setItem("ownertype", res.data.user.ownerType);
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("userid", res.data.user._id);
+            localStorage.setItem("resturant_id", res.data.user.resturant_id);
+            // history.push("/")
+            window.location.reload();
+          }
+        });
       //  history.push('/');
     } catch (error) {
       alert(error);

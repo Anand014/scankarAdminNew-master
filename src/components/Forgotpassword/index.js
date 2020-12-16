@@ -28,10 +28,11 @@ const Forgotpassword = () => {
     } else {
       try {
         axios
-          .post("http://localhost:5000/api/v1/forgotPassword", {
+          .post("https://backend.scankar.com/api/v1/resetpassword", {
             email: email,
           })
           .then((res) => {
+            console.log(res);
             if (res.status === 200) {
               setLoader(false);
               swal
@@ -46,6 +47,7 @@ const Forgotpassword = () => {
             }
           })
           .catch((error) => {
+            console.log(error);
             setLoader(false);
             swal.fire({
               title: "Email Not found",

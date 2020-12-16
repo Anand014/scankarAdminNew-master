@@ -28,7 +28,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Grid } from "@material-ui/core";
 import { displayName } from "qrcode.react";
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://backend.scankar.com";
 
 // const fast2sms = require('fast-two-sms')
 const API_KEY_SMS =
@@ -156,7 +156,7 @@ const Samplepage = (props) => {
     try {
       axios
         .get(
-          `http://localhost:5000/api/v1/customer-order/todaysales/${id}/${date}`
+          `https://backend.scankar.com/api/v1/customer-order/todaysales/${id}/${date}`
         )
         .then((res) => {
           console.log(res);

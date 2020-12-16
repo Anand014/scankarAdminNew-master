@@ -5,7 +5,7 @@ const header = {
 
 export async function addOrders(type) {
   return axios
-    .get("http://localhost:5000/api/v1/customer-order", header)
+    .get("https://backend.scankar.com/api/v1/customer-order", header)
     .then((res) => {
       let arr = [];
       switch (type) {
@@ -35,7 +35,7 @@ export async function addOrders(type) {
 
 export async function calculateSales() {
   return axios
-    .get("http://localhost:5000/api/v1/customer-order", header)
+    .get("https://backend.scankar.com/api/v1/customer-order", header)
     .then((res) => {
       let arr = res.data.data.orders;
       let state = {};

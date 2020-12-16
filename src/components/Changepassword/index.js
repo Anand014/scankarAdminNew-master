@@ -3,17 +3,19 @@ import axios from "axios";
 import swal from "sweetalert2";
 import { LinearProgress } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import { User } from "react-feather";
 
 const ChangePassword = () => {
+  const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
   const [ConfirmPassword, setConfirmPassword] = useState("");
   const [loader, setLoader] = useState(false);
 
   let history = useHistory();
+  const userID = localStorage.getItem("userid");
 
   useEffect(() => {
     console.log(password, ConfirmPassword);
-    const userID = localStorage.getItem("userid");
     console.log(userID);
 
     if (!userID) {
@@ -35,8 +37,10 @@ const ChangePassword = () => {
       let token = localStorage.getItem("token");
       try {
         axios
-          .put(`http://localhost:5000/api/v1/resetpassword/${token}`, {
+          .put(`https://backend.scankar.com/api/v1/changePassword`, {
             password: password,
+            oldpassword: oldPassword,
+            id: userID,
           })
           .then((res) => {
             if (res.status === 200) {
@@ -55,11 +59,13 @@ const ChangePassword = () => {
           })
           .catch((error) => {
             setLoader(false);
-            swal.fire({
-              title: "User Not Found",
-              icon: "info",
-              button: "Okay",
-            });
+            if (error.response.status === 401) {
+              swal.fire({
+                title: "Invalid Current password",
+                icon: "info",
+                button: "Okay",
+              });
+            }
           });
       } catch (error) {
         console.log(error);
@@ -76,7 +82,17 @@ const ChangePassword = () => {
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="Current Password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+          />
+        </div>
+        <div className="input-field">
+          <i className="fa fa-key"></i>
+          <input
+            type="password"
+            name="password"
+            placeholder="New Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
