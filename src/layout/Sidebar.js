@@ -116,7 +116,9 @@ const Sidebar = () => {
         </div>
         <div className="sidebar custom-scrollbar">
           <ul className="sidebar-menu">
-            <h4 style={{ color: "white" }}>{restaurantName}</h4>
+            <h4 style={{ color: "white", textAlign: "center" }}>
+              {restaurantName}
+            </h4>
             <hr style={{ backgroundColor: "white" }} />
             {MENUITEMS.map((menuItem, i) => (
               <li className={`${menuItem.active ? "active" : ""}`} key={i}>
