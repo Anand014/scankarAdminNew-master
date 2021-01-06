@@ -79,7 +79,7 @@ const Samplepage = (props) => {
     });
     socket.on("waiteroncall", (data) => {
       console.log("Data from websocket: ", data);
-      notifyWaiter(data.username);
+      notifyWaiter(data.tablenumber);
       bell.play();
     });
     // if (!arr) {
@@ -144,49 +144,48 @@ const Samplepage = (props) => {
     toast(`Waiter needed for ${user}!`);
     bell.play();
   };
-  const getOrderByDate = () => {
-    let id = localStorage.getItem("userid");
-    let day = startDate.getDate();
-    if (day <= 9) {
-      day = `0${day}`;
-    }
+  // const getOrderByDate = () => {
+  //   let id = localStorage.getItem("userid");
+  //   let day = startDate.getDate();
+  //   if (day <= 9) {
+  //     day = `0${day}`;
+  //   }
 
-    let date = `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${day}`;
-    console.log(date);
-    try {
-      axios
-        .get(
-          `https://backend.scankar.com/api/v1/customer-order/todaysales/${id}/${date}`
-        )
-        .then((res) => {
-          console.log(res);
-          let arr = res.data;
-          let dineIn = arr.filter((data) => {
-            return data.orderType === "Dine In" && data.process === "Completed";
-          });
+  //   let date = `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${day}`;
+  //   console.log(date);
+  //   try {
+  //     axios
+  //       .get(
+  //         `https://backend.scankar.com/api/v1/customer-order/todaysales/${id}/${date}`
+  //       )
+  //       .then((res) => {
+  //         console.log(res);
+  //         let arr = res.data;
+  //         let dineIn = arr.filter((data) => {
+  //           return data.orderType === "Dine In" && data.process === "Completed";
+  //         });
 
-          let takeAway = arr.filter((data) => {
-            return data.orderType !== "Dine In" && data.process === "Completed";
-          });
-          let x = 0;
-          let y = 0;
-
-          dineIn.forEach((item) => {
-            x += parseInt(item.price);
-          });
-          takeAway.forEach((item) => {
-            y += parseInt(item.price);
-          });
-          console.log(dineIn.length, "length of dineIn order");
-          console.log(takeAway.length, "length of dineIn order");
-          console.log(x, "dineIn price");
-          console.log(y, "takeaway price");
-        })
-        .catch((error) => console.log(error));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //         let takeAway = arr.filter((data) => {
+  //           return data.orderType !== "Dine In" && data.process === "Completed";
+  //         });
+  //         let x = 0;
+  //         let y = 0;
+  //         dineIn.forEach((item) => {
+  //           x += parseInt(item.price);
+  //         });
+  //         takeAway.forEach((item) => {
+  //           y += parseInt(item.price);
+  //         });
+  //         console.log(dineIn.length, "length of dineIn order");
+  //         console.log(takeAway.length, "length of dineIn order");
+  //         console.log(x, "dineIn price");
+  //         console.log(y, "takeaway price");
+  //       })
+  //       .catch((error) => console.log(error));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <Fragment>
@@ -208,7 +207,7 @@ const Samplepage = (props) => {
                 dateFormat="yyyy-MM-dd"
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
-                onCalendarClose={getOrderByDate}
+                // onCalendarClose={getOrderByDate}
               />
             </Grid>
             <Table

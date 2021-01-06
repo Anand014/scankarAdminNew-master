@@ -35,6 +35,7 @@ const Login = ({ history }) => {
           .then((res) => {
             console.log("login success", res);
             if (res.status === 200) {
+              localStorage.setItem("restaurantName", res.data.user.firstName);
               localStorage.setItem("ownertype", res.data.user.ownerType);
               localStorage.setItem("token", res.data.token);
               localStorage.setItem("userid", res.data.user._id);
@@ -49,8 +50,6 @@ const Login = ({ history }) => {
           })
           .catch((error) => {
             setLoader(false);
-            console.log(error.response.status, "signin status(error)");
-            console.log(error.response.data);
             if (error.response.status === 404) {
               swal.fire({
                 title: "Email Does Not Exist",

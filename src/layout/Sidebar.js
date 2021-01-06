@@ -9,6 +9,9 @@ import myApp from "../FirebaseConfig";
 
 const Sidebar = () => {
   const [mainmenu, setMainMenu] = useState(MENUITEMS);
+  const [restaurantName, setRestaurantName] = useState(
+    localStorage.getItem("restaurantName")
+  );
   const switchToggle = useSelector((state) => state.Common.switchToggle);
   const sidebar_background_color =
     configDB.data.settings.sidebar_background_setting;
@@ -113,6 +116,8 @@ const Sidebar = () => {
         </div>
         <div className="sidebar custom-scrollbar">
           <ul className="sidebar-menu">
+            <h4 style={{ color: "white" }}>{restaurantName}</h4>
+            <hr style={{ backgroundColor: "white" }} />
             {MENUITEMS.map((menuItem, i) => (
               <li className={`${menuItem.active ? "active" : ""}`} key={i}>
                 {menuItem.sidebartitle ? (

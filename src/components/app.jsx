@@ -77,6 +77,9 @@ const AppLayout = (props) => {
   const [editPrice, setEditPrice] = useState("");
   const [menuId, setMenuId] = useState(null);
   const [allcat, setAllCat] = useState([]);
+  const [restaurantName, setRestaurantName] = useState(
+    localStorage.getItem("restaurantName")
+  );
 
   const options = [
     { value: "milkType", label: "milkType" },
@@ -183,7 +186,7 @@ const AppLayout = (props) => {
     let doc = new jsPDF();
     doc.setFontSize(25);
     doc.addImage(qrCodeDataUri, "JPEG", 5, 0, 200, 200);
-    doc.text(0, 220, shop.name);
+    doc.text(0, 220, restaurantName);
 
     doc.save("takeAway.pdf");
   };
