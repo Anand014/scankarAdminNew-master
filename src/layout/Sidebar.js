@@ -179,7 +179,7 @@ const Sidebar = () => {
                 {menuItem.type === "sub6" && (
                   <a
                     href="/changepassword"
-                    style={{ marginTop: "25rem" }}
+                    style={{ marginTop: "120%" }}
                     className="sidebar-header"
                     onClick={() => toggletNavActive(menuItem)}
                   >

@@ -75,6 +75,7 @@ const AppLayout = (props) => {
   const [editModal, setEditModal] = useState(false);
   const [editName, setEditName] = useState("");
   const [editPrice, setEditPrice] = useState("");
+  const [menuPhoto, setMenuPhoto] = useState("");
   const [menuId, setMenuId] = useState(null);
   const [allcat, setAllCat] = useState([]);
   const [restaurantName, setRestaurantName] = useState(
@@ -158,7 +159,8 @@ const AppLayout = (props) => {
       console.log("endurlupdate", res);
     });
   };
-
+  console.log(menu);
+  debugger;
   const dineInGen = () => {
     const qrCodeCanvas = document.querySelectorAll("canvas");
 
@@ -384,10 +386,11 @@ const AppLayout = (props) => {
     }
   };
 
-  const editItem = (id, index) => {
+  const editItem = (id, index, photo) => {
     setEditModal(true);
     setModal(true);
     setMenuId(id);
+    setMenuPhoto(photo);
     setEditName(menu[index].name);
     setEditPrice(menu[index].price);
   };
@@ -425,7 +428,7 @@ const AppLayout = (props) => {
             name="editPrice"
           />
         </Form.Group>
-
+        <img className="editmodalphoto" src={menuPhoto} />
         <Form.Group as={Col} controlId="formGridPassword">
           <Form.Label>Update Image</Form.Label>
           <Form.Control
@@ -649,7 +652,16 @@ const AppLayout = (props) => {
                         <tbody>
                           {menu.map((item, index) => (
                             <tr>
-                              <td>{item.name}</td>
+                              <td>
+                                <img
+                                  src={item.photo}
+                                  style={{
+                                    width: "100px",
+                                    margin: "0.5rem",
+                                  }}
+                                />
+                                {item.name}
+                              </td>
                               <td>
                                 <i className="rupee sign icon"></i>
                                 {item.price}
@@ -675,7 +687,9 @@ const AppLayout = (props) => {
                                 <i
                                   className="fa fa-pencil-square-o fa-2x"
                                   aria-hidden="true"
-                                  onClick={() => editItem(item._id, index)}
+                                  onClick={() =>
+                                    editItem(item._id, index, item.photo)
+                                  }
                                 ></i>
                               </td>
                             </tr>

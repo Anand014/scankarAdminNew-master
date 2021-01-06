@@ -1,19 +1,24 @@
-.row{
-    margin-left: 25px;
+.row {
+  margin-left: 25px;
 }
 
-.generate{
-    margin-top: 8rem;
+.generate {
+  margin-top: 8rem;
 }
 
-.gstToggle{
-    width:1rem;
+.gstToggle {
+  width: 1rem;
 }
-.gst-wrapper{
-    
-
+.gst-wrapper {
 }
-.gst-toggle-label{
-    margin: 0rem 0.5rem 0rem 0rem;
+.gst-toggle-label {
+  margin: 0rem 0.5rem 0rem 0rem;
 }
 
+.editmodalphoto {
+  width: 100px;
+  position: absolute;
+  right: 6%;
+  margin-top: 0.1%;
+  border-radius: 5%;
+}
